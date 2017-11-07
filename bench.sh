@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-USAGE="Usage: bench.sh --driver [arangodb | postgres | mysql | mariadb]"
+USAGE="Usage: bench.sh --driver [arangodb | arangodbext | postgres | mysql | mariadb]"
 
 DRIVER=
 

@@ -32,7 +32,7 @@ and [Docker Compose](https://docs.docker.com/compose/install/ "Install Docker Co
 Install dependencies with:
 
 ```
-$ docker run --rm -i -v $(pwd):/app prooph/composer:7.1 update -o
+$ docker run --rm -i -v $(pwd):/app prooph/composer:7.2 update -o
 ```
 
 Then you can simply run the `bench_docker.sh` script for each driver (`arangodb` `postgres` `mysql` `mariadb`):

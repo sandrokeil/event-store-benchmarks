@@ -107,11 +107,24 @@ foreach ($eventStores as $name => $eventStore) {
     if ($eventStore instanceof TransactionalEventStore) {
         $eventStore->beginTransaction();
     }
+    $payloads = createTestEvents($payload, 2500);
+    $step = 500;
 
-    $eventStore->create(new Stream($streamName, \SplFixedArray::fromArray(createTestEvents($payload, 2500))));
+    $eventStore->create(new Stream($streamName, \SplFixedArray::fromArray(array_slice($payloads, 0, $step))));
 
     if ($eventStore instanceof TransactionalEventStore) {
         $eventStore->commit();
+    }
+
+    for ($i = $step; $i <= 2500; $i +=$step) {
+        if ($eventStore instanceof TransactionalEventStore) {
+            $eventStore->beginTransaction();
+        }
+        $eventStore->appendTo($streamName, \SplFixedArray::fromArray(array_slice($payloads, $i, $step)));
+
+        if ($eventStore instanceof TransactionalEventStore) {
+            $eventStore->commit();
+        }
     }
 
     $end = microtime(true);
