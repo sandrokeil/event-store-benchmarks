@@ -35,6 +35,7 @@ function testDatabases(): array
         'mariadb' => getenv('MARIADB_DB'),
         'postgres' => getenv('POSTGRES_DB'),
         'arangodb' => getenv('ARANGODB_DB'),
+        'arangodbext' => getenv('ARANGODB_DB'),
     ];
 }
 
@@ -69,6 +70,7 @@ function createConnection(string $driver)
 
             return new PDO("pgsql:host=$host;port=$port;dbname=$dbName;options='--client_encoding=\"$charset\"'", $username, $password);
         case 'arangodb':
+        case 'arangodbext':
             $connection = new Connection(
                 [
                     Connection::HOST => getenv('ARANGODB_HOST'),
@@ -97,7 +99,8 @@ function createDatabase($connection, string $driver, string $dbName): void
 
             break;
         case 'arangodb':
-            $result = $connection->get('/_api/collection?excludeSystem=1');
+        case 'arangodbext':
+            $result = $connection->get('/_api/collection', ['excludeSystem'=>true]);
 
             $collections = json_decode($result->getBody(), true);
 
@@ -137,7 +140,8 @@ function destroyDatabase($connection, string $driver, string $dbName): void
             $connection->exec('DROP TABLE projections;');
             break;
         case 'arangodb':
-            $result = $connection->get('/_api/collection?excludeSystem=1');
+        case 'arangodbext':
+            $result = $connection->get('/_api/collection', ['excludeSystem' =>1]);
 
             $collections = json_decode($result->getBody(), true);
 
@@ -177,6 +181,7 @@ function createEventStore(string $driver, $connection): EventStore
                 new PostgresAggregateStreamStrategy()
             );
         case 'arangodb':
+        case 'arangodbext':
             return new ArangoDbEventStore(
                 new FQCNMessageFactory(),
                 $connection,
@@ -204,6 +209,7 @@ function createProjectionManager(EventStore $eventStore, string $driver, $connec
                 $connection
             );
         case 'arangodb':
+        case 'arangodbext':
             return new ArangoDbProjectionManager(
                 $eventStore,
                 $connection

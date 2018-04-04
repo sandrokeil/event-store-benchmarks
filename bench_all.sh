@@ -3,7 +3,7 @@
 echo ""
 printf "Testing databases are "
 
-for i in arangodb postgres mariadb mysql
+for i in arangodbext arangodb postgres mariadb mysql
 do
    printf  "%s " "${i}"
 done
@@ -11,7 +11,7 @@ done
 echo ""
 sleep 2;
 
-for i in arangodb postgres mariadb mysql
+for i in arangodbext arangodb postgres mariadb mysql
 do
    ./bench.sh --driver ${i}
 done
