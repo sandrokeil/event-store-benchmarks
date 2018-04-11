@@ -100,7 +100,7 @@ function createDatabase($connection, string $driver, string $dbName): void
             break;
         case 'arangodb':
         case 'arangodbext':
-            $result = $connection->get('/_api/collection', ['excludeSystem'=>true]);
+            $result = $connection->get('/_api/collection', ['excludeSystem' => true]);
 
             $collections = json_decode($result->getBody(), true);
 
@@ -141,7 +141,7 @@ function destroyDatabase($connection, string $driver, string $dbName): void
             break;
         case 'arangodb':
         case 'arangodbext':
-            $result = $connection->get('/_api/collection', ['excludeSystem' =>1]);
+            $result = $connection->get('/_api/collection', ['excludeSystem' => true]);
 
             $collections = json_decode($result->getBody(), true);
 
@@ -282,7 +282,8 @@ function testPayload(): array
 }
 
 
-function outputText(string $text) {
+function outputText(string $text)
+{
     $time = new \DateTime('now');
     echo $time->format('Y-m-d\TH:i:s.u') . ': ' . $text . PHP_EOL;
 }
