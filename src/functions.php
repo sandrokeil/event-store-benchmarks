@@ -78,6 +78,7 @@ function createConnection(string $driver)
                     Connection::VST_VERSION => Connection::VST_VERSION_11,
                 ]
             );
+            $connection->setDefaultTimeout(10);
             $connection->connect();
             return $connection;
     }
