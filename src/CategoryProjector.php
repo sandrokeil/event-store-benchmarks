@@ -62,7 +62,8 @@ class CategoryProjector
             outputText("Projection $this->id read $readEvents events");
             outputText("projection $this->id used $time seconds, avg $avg events/second");
         } catch (\Throwable $e) {
-            echo $e->getMessage() . PHP_EOL . $e->getTraceAsString();
+            outputText($e->getMessage() . PHP_EOL . $e->getTraceAsString());
         }
+        unset($connection, $eventStore, $projectionManager);
     }
 }

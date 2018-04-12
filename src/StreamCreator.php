@@ -34,7 +34,6 @@ class StreamCreator
 
         try {
             $connection = createConnection($this->driver);
-
             $eventStore = createEventStore($this->driver, $connection);
 
             $start = microtime(true);
@@ -64,7 +63,8 @@ class StreamCreator
             outputText("Writer $this->id-$this->category wrote $this->eventsWritten events");
             outputText("Writer $this->id-$this->category used $time seconds, avg $avg events/second");
         } catch (\Throwable $e) {
-            echo $e->getMessage() . PHP_EOL . $e->getTraceAsString();
+            outputText($e->getMessage() . PHP_EOL . $e->getTraceAsString());
         }
+        unset($connection, $eventStore);
     }
 }
